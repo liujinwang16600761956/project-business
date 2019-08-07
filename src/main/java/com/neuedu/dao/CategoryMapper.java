@@ -1,6 +1,8 @@
 package com.neuedu.dao;
 
 import com.neuedu.pojo.Category;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CategoryMapper {
@@ -43,4 +45,12 @@ public interface CategoryMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Category record);
+
+    /**
+     *
+     *根据ID查找
+     *
+     */
+    Category findByCategoryId(@Param("id") Integer id);
+
 }
