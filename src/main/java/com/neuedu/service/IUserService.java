@@ -11,4 +11,14 @@ public interface IUserService {
 
     public List<UserInfo> selectAdmin();
 
+    public int addUserInfo(UserInfo userInfo);
+
+    public int deleteUserInfo(int id);
+
+    public int updateUserInfo(UserInfo userInfo);
+
+    public UserInfo findById(Integer id);
+
+
+
 }

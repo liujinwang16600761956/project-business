@@ -48,7 +48,7 @@ public class ConstumFilter implements Filter {
 
         UserInfo userInfo=(UserInfo) session.getAttribute("userInfo");
         if(userInfo==null){
-            response.sendRedirect("userList.jsp");
+            response.sendRedirect("/admin/admin");
             return;
         }
         //请求通过过滤器

@@ -2,7 +2,9 @@ package com.neuedu.controller;
 
 
 import com.neuedu.pojo.Category;
+import com.neuedu.pojo.Product;
 import com.neuedu.service.ICategoryService;
+import com.neuedu.service.IProductService;
 import com.neuedu.service.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +18,15 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequestMapping("/category/")
+@RequestMapping("/admin/category/")
 public class CategoryController {
 
 
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private IProductService productService;
 
 
     @RequestMapping("all")
@@ -38,8 +43,10 @@ public class CategoryController {
                                  HttpServletRequest request,
                                  HttpServletResponse response){
         Category category=categoryService.findById(id);
+        List<Category> categories=categoryService.selectAllCategory();
         HttpSession session=request.getSession();
         session.setAttribute("category",category);
+        session.setAttribute("categories",categories);
         return "categoryUpdate";
 
     }
@@ -49,7 +56,7 @@ public class CategoryController {
         int count=categoryService.updateCategory(category);
 
         if(count>0){
-            return "redirect:/category/all";
+            return "redirect:/admin/category/all";
         }
         return "categoryUpdate";
 
@@ -64,14 +71,15 @@ public class CategoryController {
 
         Integer count=categoryService.deleteCategory(id);
 
-        return "redirect:/category/all";
+        return "redirect:/admin/category/all";
 
     }
 
 
     @RequestMapping(value = "add",method = RequestMethod.GET)
-    public String AddCategory(){
-
+    public String AddCategory(HttpSession session){
+        List<Category> categories=categoryService.selectAllCategory();
+        session.setAttribute("categories",categories);
         return "categoryAdd";
 
     }
@@ -81,11 +89,104 @@ public class CategoryController {
         Integer count=categoryService.addCategory(category);
 
         if(count>0){
-            return "redirect:/category/all";
+            return "redirect:/admin/category/all";
         }
         return "categoryAdd";
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @RequestMapping(value = "product2/{CategoryId}",method = RequestMethod.GET)
+    public String MoreProduct(@PathVariable("CategoryId") Integer categoryId,
+                              HttpServletRequest request,
+                              HttpServletResponse response){
+
+        List<Product> products=productService.findByCategoryId(categoryId);
+        HttpSession session=request.getSession();
+        session.setAttribute("products",products);
+        session.setAttribute("categoryId",categoryId);
+        return "productList";
+
+    }
+
+    @RequestMapping(value = "product2/update/{id}",method = RequestMethod.GET)
+    public String UpdateProduct(@PathVariable("id") Integer id,
+                                HttpServletRequest request,
+                                HttpServletResponse response){
+        Product product=productService.findById(id);
+        List<Category> categories=categoryService.selectAllCategory();
+        HttpSession session=request.getSession();
+        Integer categoryId=(Integer) session.getAttribute("categoryId");
+        session.setAttribute("product",product);
+        session.setAttribute("categoryId",categoryId);
+
+        System.out.println("========"+categoryId);
+        return "productUpdate";
+
+    }
+
+    @RequestMapping(value = "product2/update/{id}",method = RequestMethod.POST)
+    public String UpdateProduct(Product product,HttpSession session){
+        int count=productService.updateProduct(product);
+        Integer categoryId=(Integer) session.getAttribute("categoryId");
+        if(count>0){
+            String url="redirect:/admin/category/product2/"+categoryId;
+            return url;
+        }
+        return "productUpdate";
+
+    }
+
+
+
+    @RequestMapping(value = "product2/delete/{id}",method = RequestMethod.GET)
+    public String DeleteProduct(@PathVariable("id") Integer id,
+                                HttpServletRequest request,
+                                HttpServletResponse response){
+        HttpSession session=request.getSession();
+        Integer count=productService.deleteProduct(id);
+        Integer categoryId=(Integer) session.getAttribute("categoryId");
+        String url="redirect:/admin/category/product2/"+categoryId;
+        return url;
+
+    }
+
+
+    @RequestMapping(value = "product2/add",method = RequestMethod.GET)
+    public String AddProduct(HttpSession session){
+        Integer categoryId=(Integer) session.getAttribute("categoryId");
+        session.setAttribute("categoryId",categoryId);
+        return "productAdd";
+
+    }
+
+    @RequestMapping(value = "product2/add",method = RequestMethod.POST)
+    public String AddProduct(Product product,HttpSession session){
+        Integer count=productService.addProduct(product);
+        Integer categoryId=(Integer) session.getAttribute("categoryId");
+        session.setAttribute("categoryId",categoryId);
+
+        if(count>0){
+            String url="redirect:/admin/category/product2/"+categoryId;
+            return url;
+        }
+        return "productAdd";
+
+    }
+
+
+
 
 
 

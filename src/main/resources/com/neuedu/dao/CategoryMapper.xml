@@ -41,16 +41,16 @@
     update neuedu_category
     <set>
       <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=INTEGER},
+        parent_id = #{parentId},
       </if>
       <if test="name != null">
-        name = #{name,jdbcType=INTEGER},
+        name = #{name},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
+        status = #{status},
       </if>
       <if test="sortOrder != null">
-        sort_order = #{sortOrder,jdbcType=INTEGER},
+        sort_order = #{sortOrder},
       </if>
         update_time = now(),
     </set>
@@ -80,7 +80,10 @@
     from neuedu_category where id=#{id}
   </select>
 
-
+  <select id="findByParentId" resultMap="BaseResultMap" >
+    select c1.id, c1.parent_id, c1.name, c1.status, c1.sort_order, c1.create_time, c1.update_time
+    from neuedu_category c1 join neuedu_category c2 on c1.parent_id=c2.id
+  </select>
 
 
 </mapper>

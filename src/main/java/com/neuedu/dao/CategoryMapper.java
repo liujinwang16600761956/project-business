@@ -52,5 +52,11 @@ public interface CategoryMapper {
      *
      */
     Category findByCategoryId(@Param("id") Integer id);
+    /**
+     *
+     *根据父类Id查找
+     *
+     */
 
+    List<Category> findByParentId();
 }

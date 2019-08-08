@@ -46,8 +46,18 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public Category findById(Integer id) {
 
-        Category category=categoryMapper.findByCategoryId(id);
+        Category category=categoryMapper.selectByPrimaryKey(id);
+        System.out.println(category.getParentId());
+        System.out.println("=============================================");
+
 
         return category;
+    }
+
+    @Override
+    public List<Category> selectByParentId() {
+
+        List<Category> categories=categoryMapper.findByParentId();
+        return categories;
     }
 }

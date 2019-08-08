@@ -11,16 +11,16 @@
 <%@page isELIgnored="false" %>
 <html>
 <head>
-    <title>商品类</title>
+    <title>商品类别表</title>
 </head>
 <body>
 
 <table>
     <thead>
-        <th>商品ID</th>
-        <th>商品父类ID</th>
-        <th>商品名</th>
-        <th>商品状态</th>
+        <th>商品类别ID</th>
+        <th>商品类别所属父类</th>
+        <th>商品类别名</th>
+        <th>商品类别状态</th>
         <th>排序编号</th>
         <th>创建时间</th>
         <th>最后一次更新时间</th>
@@ -39,6 +39,7 @@
             <th>
                 <a href="update/${category.id}">编辑</a>
                 <a href="delete/${category.id}">删除</a>
+                <a href="product2/${category.id}">更多</a>
             </th>
         </tr>
     </c:forEach>

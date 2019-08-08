@@ -5,6 +5,7 @@ import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,7 +52,7 @@ public class UserController {
             response.addCookie(password_cookie);
 
             session.setAttribute(Const.CURRENT_USER,userInfo);
-            return "redirect:admin";
+            return "redirect:/admin/admin";
 
         }
         return "forward:login";
@@ -69,7 +70,58 @@ public class UserController {
 
 
 
+    @RequestMapping(value = "update/{id}",method = RequestMethod.GET)
+    public String UpdateUserInfo(@PathVariable("id") Integer id,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response){
+        UserInfo userInfo=userService.findById(id);
+        HttpSession session=request.getSession();
+        session.setAttribute("userInfo",userInfo);
+        return "userUpdate";
 
+    }
+
+    @RequestMapping(value = "update/{id}",method = RequestMethod.POST)
+    public String UpdateUserInfo(UserInfo userInfo){
+        int count=userService.updateUserInfo(userInfo);
+
+        if(count>0){
+            return "redirect:/admin/admin";
+        }
+        return "userUpdate";
+
+    }
+
+
+
+    @RequestMapping(value = "delete/{id}",method = RequestMethod.GET)
+    public String DeleteCategory(@PathVariable("id") Integer id,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response){
+
+        Integer count=userService.deleteUserInfo(id);
+
+        return "redirect:/admin/admin";
+
+    }
+
+
+    @RequestMapping(value = "add",method = RequestMethod.GET)
+    public String AddCategory(HttpSession session){
+        return "userAdd";
+
+    }
+
+    @RequestMapping(value = "add",method = RequestMethod.POST)
+    public String AddCategory(UserInfo userInfo){
+        Integer count=userService.addUserInfo(userInfo);
+
+        if(count>0){
+            return "redirect:/admin/admin";
+        }
+        return "userAdd";
+
+    }
 
 
 

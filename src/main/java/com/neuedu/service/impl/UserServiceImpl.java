@@ -66,5 +66,30 @@ public class UserServiceImpl implements IUserService {
         return userInfos;
     }
 
+    @Override
+    public int addUserInfo(UserInfo userInfo) {
+
+        int count=userInfoMapper.insert(userInfo);
+        return count;
+    }
+
+    @Override
+    public int deleteUserInfo(int id) {
+        int count=userInfoMapper.deleteByPrimaryKey(id);
+        return count;
+    }
+
+    @Override
+    public int updateUserInfo(UserInfo userInfo) {
+        int count=userInfoMapper.updateByPrimaryKey(userInfo);
+        return count;
+    }
+
+    @Override
+    public UserInfo findById(Integer id) {
+        UserInfo userInfo=userInfoMapper.selectByPrimaryKey(id);
+        return userInfo;
+    }
+
 
 }

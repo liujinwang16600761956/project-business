@@ -17,5 +17,6 @@ public interface ICategoryService {
 
     public Category findById(Integer id);
 
+    public List<Category> selectByParentId();
 
 }

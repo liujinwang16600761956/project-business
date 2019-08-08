@@ -1,7 +1,11 @@
 package com.neuedu.pojo;
 
+import com.neuedu.annotation.Table;
+
 import java.math.BigDecimal;
 import java.util.Date;
+
+
 
 public class Order {
     /**

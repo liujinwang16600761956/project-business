@@ -15,6 +15,12 @@
 </head>
 <body>
 
+
+<a href="/admin/category/all">商品类别</a>
+<a href="/admin/category/product/all">所有商品</a>
+
+
+
 <table>
     <thead>
     <th>管理员ID</th>
@@ -26,6 +32,7 @@
     <th>找回密码答案</th>
     <th>创建时间</th>
     <th>最后一次更新时间</th>
+    <th>管理员ip</th>
     </thead>
     <tbody>
     <c:forEach items="${userInfos}" var="userInfo">
@@ -39,9 +46,17 @@
             <th>${userInfo.answer}</th>
             <th>${userInfo.createTime}</th>
             <th>${userInfo.updateTime}</th>
+            <th>${userInfo.ip}</th>
+            <a href="update/${userInfo.id}">编辑</a>
+            <a href="delete/${userInfo.id}">删除</a>
         </tr>
     </c:forEach>
     </tbody>
+    <thead>
+    <a href="add">增加</a>
+    </thead>
+
+
 </table>
 
 
